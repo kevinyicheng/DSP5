@@ -246,10 +246,10 @@
     <div class="container">
         <div class="left-section">
             <h2>DSP5 計算機</h2>
-            <p class="description">輸入預計金額與淨值，自動獲取匯率並計算每月配息！</p>
+            <p class="description">輸入預計投入金額與淨值，自動獲取匯率並試算每月配息！</p>
             
             <div class="form-group">
-                <label for="investment">預計投入的金額 (NTD)：</label>
+                <label for="investment">預計投入金額 (NTD)：</label>
                 <input type="number" id="investment" placeholder="例如 1000000" min="0" step="100">
             </div>
             
@@ -355,7 +355,7 @@
 
             elements.result.innerHTML = `
                 <div class="result-card">
-                    月配息金額：<br><span>NTD$ ${(monthlyPayout * exchangeRate).toFixed(decimalPlaces)}</span>
+                    月配息試算：<br><span>NTD$ ${(monthlyPayout * exchangeRate).toFixed(decimalPlaces)}</span>
                 </div>
                 <table class="result-table">
                     <tr><td>可得單位數：</td><td>${units.toFixed(2)}</td></tr>
