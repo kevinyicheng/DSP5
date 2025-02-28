@@ -8,33 +8,46 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
-            background: linear-gradient(135deg, #74ebd5, #acb6e5);
-            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
         .container {
             max-width: 400px;
             padding: 20px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: 20px;
         }
         h2 {
             color: #fff;
-            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        label {
+            color: #fff;
+            font-size: 16px;
+            display: block;
+            margin: 10px 0 5px;
         }
         input {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin-bottom: 10px;
             font-size: 16px;
             border: none;
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.5);
+            box-sizing: border-box;
         }
         button {
             padding: 10px 20px;
@@ -42,59 +55,92 @@
             cursor: pointer;
             border: none;
             border-radius: 5px;
+            color: white;
             margin: 5px;
-            color: #fff;
-            background: #ff7eb3;
-            transition: 0.3s;
         }
-        button:hover {
-            background: #ff5c8d;
+        button.calculate {
+            background: #007BFF;
+        }
+        button.calculate:hover {
+            background: #0056b3;
+        }
+        button.reset {
+            background: #6c757d;
+        }
+        button.reset:hover {
+            background: #5a6268;
         }
         .result {
             margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 16px;
             color: #fff;
         }
-        .formula {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 10px;
+        .result table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .result td {
+            padding: 5px;
+            text-align: left;
+        }
+        .highlight {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffdd57;
+        }
+        @media (max-width: 600px) {
+            .container {
+                max-width: 90%;
+            }
+            input, button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>DSP5 計算機</h2>
+        <div class="description">輸入預計金額、淨值與匯率，快速計算每月配息！</div>
         
-        <label>預計投入的金額：</label>
-        <input type="number" id="investment" placeholder="請輸入金額" min="0">
+        <label>預計投入的金額 (NTD)：</label>
+        <input type="number" id="investment" placeholder="例如 1000000" min="0">
         
-        <label>假設淨值：</label>
-        <input type="number" id="netValue" placeholder="請輸入淨值" min="0">
+        <label>假設淨值 (每單位)：</label>
+        <input type="number" id="netValue" placeholder="例如 1.5" min="0" step="0.01">
         
-        <label>假設匯率：</label>
-        <input type="number" id="exchangeRate" placeholder="請輸入匯率" min="0">
+        <label>假設匯率 (NTD/USD)：</label>
+        <input type="number" id="exchangeRate" placeholder="例如 32.5" min="0" step="0.01">
         
-        <button onclick="calculateResult()">計算</button>
-        <button onclick="resetFields()" style="background:#6c757d;">重置</button>
+        <button class="calculate" onclick="calculateResult()">計算</button>
+        <button class="reset" onclick="resetFields()">重置</button>
         
         <div class="result" id="result"></div>
-        <div class="formula" id="formula"></div>
     </div>
 
     <script>
         function calculateResult() {
+            let button = document.querySelector('.calculate');
+            button.innerHTML = "計算中...";
+            
             let investment = parseFloat(document.getElementById("investment").value);
             let netValue = parseFloat(document.getElementById("netValue").value);
             let exchangeRate = parseFloat(document.getElementById("exchangeRate").value);
 
             if (isNaN(investment) || isNaN(netValue) || isNaN(exchangeRate)) {
                 alert("請輸入有效的數字！");
+                button.innerHTML = "計算";
+                return;
+            }
+            if (investment < 0 || netValue < 0 || exchangeRate < 0) {
+                alert("輸入值不能為負數！");
+                button.innerHTML = "計算";
                 return;
             }
             if (netValue === 0 || exchangeRate === 0) {
                 alert("淨值與匯率不能為 0！");
+                button.innerHTML = "計算";
                 return;
             }
 
@@ -111,13 +157,17 @@
             
             let finalResult = (adjustedInvestment / netValue) / exchangeRate;
             let monthlyPayout = finalResult * 0.055;
-            
-            document.getElementById("result").innerHTML = `
-                <b>每月配息預估</b><br>
-                ${finalResult.toFixed(2)} 單位數 x 0.055 (配息)<br>
-                <b>月配息金額：NTD$ ${ (monthlyPayout * exchangeRate).toFixed(2) }</b>
-            `;
-            document.getElementById("formula").innerHTML = `計算公式：(${investment} x ${adjustedInvestment / investment}) / ${netValue} / ${exchangeRate} * 0.055`;
+            let decimalPlaces = investment > 10000000 ? 0 : 2;
+
+            setTimeout(() => {
+                button.innerHTML = "計算";
+                document.getElementById("result").innerHTML = `
+                    <table>
+                        <tr><td>單位數：</td><td>${finalResult.toFixed(2)}</td></tr>
+                        <tr><td>配息率：</td><td>0.055</td></tr>
+                        <tr><td>月配息金額：</td><td class="highlight">NTD$ ${(monthlyPayout * exchangeRate).toFixed(decimalPlaces)}</td></tr>
+                    </table>`;
+            }, 500);
         }
 
         function resetFields() {
@@ -125,7 +175,7 @@
             document.getElementById("netValue").value = "";
             document.getElementById("exchangeRate").value = "";
             document.getElementById("result").innerHTML = "";
-            document.getElementById("formula").innerHTML = "";
+            document.getElementById("investment").focus();
         }
     </script>
 </body>
