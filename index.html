@@ -11,7 +11,7 @@
             --highlight-color: #ffdd57;
             --text-color: #fff;
             --glass-bg: rgba(255, 255, 255, 0.3);
-            --note-color: #ff0000; /* 紅色變數 */
+            --note-color: #ff0000;
         }
 
         * {
@@ -161,8 +161,8 @@
 
         .notes-list a {
             color: var(--note-color);
-            text-decoration: underline; /* 超連結預設底線 */
-            font-style: italic; /* 超連結斜體 */
+            text-decoration: underline;
+            font-style: italic;
         }
 
         .notes-list a:hover {
@@ -293,8 +293,8 @@
 
             elements.result.innerHTML = `
                 <table class="result-table">
-                    <tr><td>單位數：</td><td>${units.toFixed(2)}</td></tr>
-                    <tr><td>配息率：</td><td>0.055</td></tr>
+                    <tr><td>可得單位數：</td><td>${units.toFixed(2)}</td></tr>
+                    <tr><td>每單位配息：</td><td>0.055</td></tr>
                     <tr><td>當前匯率 (USD/TWD)：</td><td>${exchangeRate.toFixed(2)}</td></tr>
                     <tr><td>月配息金額：</td><td class="highlight">NTD$ ${(monthlyPayout * exchangeRate).toFixed(decimalPlaces)}</td></tr>
                 </table>
