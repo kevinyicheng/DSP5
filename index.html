@@ -3,54 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSP5月配息試算</title>
+    <title>DSP5 計算機</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 50px;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .container {
             max-width: 400px;
-            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #fff;
+            font-size: 24px;
         }
         input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.5);
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            color: #fff;
+            background: #ff7eb3;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #ff5c8d;
         }
         .result {
             margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
+            color: #fff;
         }
-        .bold {
-            font-weight: bold;
+        .formula {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>DSP5月配息試算</h2>
-        <label>預計投入資金：</label>
+        <h2>DSP5 計算機</h2>
+        
+        <label>預計投入的金額：</label>
         <input type="number" id="investment" placeholder="請輸入金額" min="0">
         
-        <label>假設每單位淨值：</label>
+        <label>假設淨值：</label>
         <input type="number" id="netValue" placeholder="請輸入淨值" min="0">
         
-        <label>假設美元匯率：</label>
+        <label>假設匯率：</label>
         <input type="number" id="exchangeRate" placeholder="請輸入匯率" min="0">
         
         <button onclick="calculateResult()">計算</button>
-        <button onclick="resetFields()">重置</button>
+        <button onclick="resetFields()" style="background:#6c757d;">重置</button>
         
         <div class="result" id="result"></div>
+        <div class="formula" id="formula"></div>
     </div>
 
     <script>
@@ -78,24 +108,3 @@
             } else {
                 adjustedInvestment = investment * 0.98;
             }
-            
-            let finalResult = (adjustedInvestment / netValue) / exchangeRate;
-            let monthlyPayout = finalResult * 0.055;
-            let totalMonthlyPayout = monthlyPayout * exchangeRate;
-            
-            document.getElementById("result").innerHTML = `
-                <div class="bold">每月配息預估</div>
-                ${finalResult.toFixed(2)} 單位數 x 0.055 (配息)<br>
-                <div class="bold">月配息金額：NTD$${totalMonthlyPayout.toFixed(2)}</div>
-            `;
-        }
-
-        function resetFields() {
-            document.getElementById("investment").value = "";
-            document.getElementById("netValue").value = "";
-            document.getElementById("exchangeRate").value = "";
-            document.getElementById("result").innerHTML = "";
-        }
-    </script>
-</body>
-</html>
