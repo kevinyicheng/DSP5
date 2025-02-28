@@ -138,20 +138,7 @@
             padding: 0.5rem;
             text-align: left;
         }
-        
-        .watermark {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 20px;
-            font-family: 'Impact', sans-serif;
-            color: rgba(0, 0, 0, 0.1);
-            pointer-events: none;
-        }
-        
-    </style>
-</head>
+
         .highlight {
             font-family: 'Courier New', monospace;
             font-size: 1.5rem;
@@ -301,18 +288,18 @@
             const monthlyPayout = units * 0.055;
             const decimalPlaces = values.investment > 10000000 ? 0 : 2;
 
-            elements.exchangeRateInfo.innerHTML = ` (${exchangeDateTime}：${exchangeRate.toFixed(2)})`;
+            elements.exchangeRateInfo.innerHTML =  (${exchangeDateTime}：${exchangeRate.toFixed(2)});
 
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            elements.result.innerHTML = `
+            elements.result.innerHTML = 
                 <table class="result-table">
                     <tr><td>可得單位數：</td><td>${units.toFixed(2)}</td></tr>
                     <tr><td>每單位配息：</td><td>0.055</td></tr>
                     <tr><td>當前匯率 (USD/TWD)：</td><td>${exchangeRate.toFixed(2)}</td></tr>
                     <tr><td>月配息試算：</td><td class="highlight">NTD$ ${(monthlyPayout * exchangeRate).toFixed(decimalPlaces)}</td></tr>
                 </table>
-            `;
+            ;
             resetButton();
         }
 
@@ -334,6 +321,5 @@
             if (e.key === 'Enter') calculateResult();
         });
     </script>
-        <div class="watermark">made by kevinyicheng</div>
 </body>
 </html>
