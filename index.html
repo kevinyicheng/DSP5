@@ -108,3 +108,25 @@
             } else {
                 adjustedInvestment = investment * 0.98;
             }
+            
+            let finalResult = (adjustedInvestment / netValue) / exchangeRate;
+            let monthlyPayout = finalResult * 0.055;
+            
+            document.getElementById("result").innerHTML = `
+                <b>每月配息預估</b><br>
+                ${finalResult.toFixed(2)} 單位數 x 0.055 (配息)<br>
+                <b>月配息金額：NTD$ ${ (monthlyPayout * exchangeRate).toFixed(2) }</b>
+            `;
+            document.getElementById("formula").innerHTML = `計算公式：(${investment} x ${adjustedInvestment / investment}) / ${netValue} / ${exchangeRate} * 0.055`;
+        }
+
+        function resetFields() {
+            document.getElementById("investment").value = "";
+            document.getElementById("netValue").value = "";
+            document.getElementById("exchangeRate").value = "";
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("formula").innerHTML = "";
+        }
+    </script>
+</body>
+</html>
